@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Rentables</string>
+    <string name="login_placeholder">Username</string>
+    <string name="password_placeholder">Password</string>
+    <string name="login_button_text">Log in</string>
+    <string name="Register">Register</string>
+    <string name="forgot_password"><u>Forgot Password</u></string>
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="sign_up"><u>SIGN UP</u></string>
+    <string name="dialog_fire_missiles">fire missiles</string>
+    <string name="fire">Fire</string>
+    <string name="cancel">Cancel</string>
+</resources>
