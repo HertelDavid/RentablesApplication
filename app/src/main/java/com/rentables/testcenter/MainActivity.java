@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void registerUser(View view){
 
-        System.out.println("Nothing yet");
+        System.out.println("Nothing yet!");
     }
 
     public void resetPasswordTypeface(){
