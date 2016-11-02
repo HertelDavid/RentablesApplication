@@ -43,7 +43,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void registerUser(View view){
 
-        System.out.println("Nothing yet");
+        Intent registerIntent = new Intent(this, RegisterUserActivity.class);
+        startActivity(registerIntent);
+
     }
 
     public void resetPasswordTypeface(){
