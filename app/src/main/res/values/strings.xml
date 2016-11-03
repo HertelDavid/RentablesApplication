@@ -20,4 +20,8 @@
     <string name="register_password">Password</string>
     <string name="register_button">REGISTER</string>
 
+    <!-- Strings for the overflow menu -->
+    <string name="overflow_settings_string">Settings</string>
+    <string name="overflow_account_string">Account</string>
+
 </resources>

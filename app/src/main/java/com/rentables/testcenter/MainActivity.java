@@ -5,9 +5,12 @@ import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
+import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 
@@ -21,9 +24,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        Toolbar toolbar = (Toolbar) findViewById(R.id.rentables_toolbar);
+        setSupportActionBar(toolbar);
 
         resetPasswordTypeface();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+
+        getMenuInflater().inflate(R.menu.overflow_menu, menu);
+
+        return true;
     }
 
     public void userLogin(View view){
@@ -41,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void registerUser(View view){
+    public void startRegisterUserActivity(View view){
 
         Intent registerIntent = new Intent(this, RegisterUserActivity.class);
         startActivity(registerIntent);
