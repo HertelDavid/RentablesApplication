@@ -12,4 +12,12 @@
 
     <!-- Strings for activity_forgot_pass-->
     <string name="enter_username">Please enter your username</string>
+
+    <!-- Strings for activity_register_user -->
+    <string name="register_email">Email</string>
+    <string name="register_first_name">First Name</string>
+    <string name="register_last_name">Last Name</string>
+    <string name="register_password">Password</string>
+    <string name="register_button">REGISTER</string>
+
 </resources>
