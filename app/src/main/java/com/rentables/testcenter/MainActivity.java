@@ -1,22 +1,21 @@
 package com.rentables.testcenter;
 
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
+import android.view.View.OnKeyListener;
 import android.widget.EditText;
 
-import java.net.URI;
+public class MainActivity extends AppCompatActivity implements ThreadListener{
 
-public class MainActivity extends AppCompatActivity {
+    ServerGetUser get;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,10 +23,18 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Setting up toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.rentables_toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Rentables");
 
+        //Adding onKeyListener for password EditText
+        onKeyListenerForPassword();
+
+        //Resetting weird password typeface
         resetPasswordTypeface();
+
+        testServerConnection();
     }
 
     @Override
@@ -38,11 +45,51 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void notifyOfThreadCompletion(final NotifyingThread notifyingThread){
+
+        ServerGetUser thread = (ServerGetUser) notifyingThread;
+        thread.printProperties();
+    }
+
+    public void testServerConnection(){
+
+        //get = new ServerGetUser(1);
+        //get1 = new ServerGetUser(1);
+        //get2 = new ServerGetUser(22);
+        //get.addListener(this);
+        //get1.addListener(this);
+        //get2.addListener(this);
+        //new Thread(get).start();
+        //new Thread(get1).start();
+        //new Thread(get2).start();
+
+    }
+
     public void userLogin(View view){
 
-        Intent intent = new Intent();
-        intent.setClass(this, com.rentables.testcenter.HomeActivity.class);
-        startActivity(intent);
+        EditText userName = (EditText) findViewById(R.id.username_edit_text);
+        EditText password = (EditText) findViewById(R.id.password_edit_text);
+        boolean complete = true;
+
+        if(userName.getText().toString().trim().equals("")){
+
+            userName.setError("Username Required");
+            complete = false;
+        }
+
+        if(password.getText().toString().trim().equals("")){
+
+            password.setError("Password Required");
+            complete = false;
+        }
+
+        if(complete){
+
+            Intent loginIntent = new Intent();
+            loginIntent.setClass(this, HomeActivity.class);
+            startActivity(loginIntent);
+        }
     }
 
     public void forgotPassword(View view){
@@ -65,5 +112,25 @@ public class MainActivity extends AppCompatActivity {
         EditText password = (EditText) findViewById(R.id.password_edit_text);
         password.setTypeface(Typeface.DEFAULT);
         password.setTransformationMethod(new PasswordTransformationMethod());
+    }
+
+    public void onKeyListenerForPassword(){
+
+        final EditText passText = (EditText) findViewById(R.id.password_edit_text);
+
+        passText.setOnKeyListener(new OnKeyListener(){
+
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event){
+
+                if(event.getKeyCode() == KeyEvent.KEYCODE_ENTER && event.getAction() == KeyEvent.ACTION_UP){
+
+                    userLogin(passText);
+                    return true;
+                }
+
+                return false;
+            }
+        });
     }
 }
