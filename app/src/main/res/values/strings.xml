@@ -18,6 +18,7 @@
     <string name="register_first_name">First Name</string>
     <string name="register_last_name">Last Name</string>
     <string name="register_password">Password</string>
+    <string name="register_password_confirm">Confirm Password</string>
     <string name="register_button">REGISTER</string>
 
     <!-- Strings for the overflow menu -->

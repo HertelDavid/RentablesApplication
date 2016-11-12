@@ -9,13 +9,16 @@ import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.widget.EditText;
 
+import dataobjects.User;
+
 public class MainActivity extends AppCompatActivity implements ThreadListener{
 
-    ServerGetUser get;
+    User firstUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,7 +26,7 @@ public class MainActivity extends AppCompatActivity implements ThreadListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Setting up toolbar
+        //Setting up the toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.rentables_toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Rentables");
@@ -48,22 +51,32 @@ public class MainActivity extends AppCompatActivity implements ThreadListener{
     @Override
     public void notifyOfThreadCompletion(final NotifyingThread notifyingThread){
 
-        ServerGetUser thread = (ServerGetUser) notifyingThread;
-        thread.printProperties();
+        ThreadGetUser thread = (ThreadGetUser) notifyingThread;
+        firstUser.printProperties();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+
+        switch(item.getItemId()){
+
+            case R.id.overflow_settings_option:
+                System.out.println("Reached");
+                return true;
+            case R.id.overflow_account_option:
+                System.out.println("Reached");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void testServerConnection(){
 
-        //get = new ServerGetUser(1);
-        //get1 = new ServerGetUser(1);
-        //get2 = new ServerGetUser(22);
-        //get.addListener(this);
-        //get1.addListener(this);
-        //get2.addListener(this);
-        //new Thread(get).start();
-        //new Thread(get1).start();
-        //new Thread(get2).start();
-
+        /*firstUser = new User(32);
+        ThreadGetUser get = new ThreadGetUser(firstUser);
+        get.addListener(this);
+        new Thread(get).start();*/
     }
 
     public void userLogin(View view){
