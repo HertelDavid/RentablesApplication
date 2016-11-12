@@ -1,3 +1,7 @@
+
+//A class for threads to extend. When the thread is finished executing it will call the
+//notifyListeners method and then it will call each individual listener's notifyOfThreadCompletion method.
+
 package com.rentables.testcenter;
 
 import java.util.Set;

@@ -1,29 +1,24 @@
 package com.rentables.testcenter;
 
-import android.os.HandlerThread;
-import android.util.JsonReader;
+//Thread for getting information from the server and storing it in the designated User object.
 
-import java.io.BufferedReader;
+import android.util.JsonReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class ServerGetUser extends NotifyingThread {
+import dataobjects.User;
 
-    private String GET_USER = "http://beeduck.ddns.net:8080/users/userInfo/";
-    private int userId;
-    private String username = "";
-    private String firstName = "";
-    private String lastName = "";
-    private String createDate = "";
-    private String lastEditDate = "";
-    private boolean active = false;
+public class ThreadGetUser extends NotifyingThread {
 
-    public ServerGetUser(int newUserId){
+    private String GET_USER = "http://10.0.2.2:8080/users/userInfo/";
+    private User currentUser;
 
-        setUserId(newUserId);
+    public ThreadGetUser(User theUser){
+
+        currentUser = theUser;
     }
 
     @Override
@@ -37,11 +32,11 @@ public class ServerGetUser extends NotifyingThread {
 
         try{
 
-            URL url = new URL(GET_USER + getUserId());
+            //Opening connection to the server and making it http.
+            URL url = new URL(GET_USER + currentUser.getUserId());
             HttpURLConnection connect = (HttpURLConnection) url.openConnection();
 
-            System.out.println("Reached");
-
+            //Setting the properties of this connection
             connect.setRequestMethod("GET");
             connect.setRequestProperty("Accept", "application/json");
 
@@ -80,17 +75,17 @@ public class ServerGetUser extends NotifyingThread {
                 if(name.equals("id")){
                     reader.skipValue();
                 }else if(name.equals("username")){
-                    username = reader.nextString();
+                    currentUser.setUsername(reader.nextString());
                 }else if(name.equals("firstName")){
-                    firstName = reader.nextString();
+                    currentUser.setFirstName(reader.nextString());
                 }else if(name.equals("lastName")){
-                    lastName = reader.nextString();
+                    currentUser.setLastName(reader.nextString());
                 }else if(name.equals("createDate")){
-                    createDate = reader.nextString();
+                    currentUser.setCreateDate(reader.nextString());
                 }else if(name.equals("lastEditDate")){
-                    lastEditDate = reader.nextString();
+                    currentUser.setLastEditDate(reader.nextString());
                 }else if(name.equals("active")){
-                    active = reader.nextBoolean();
+                    currentUser.setActive(reader.nextBoolean());
                 }else{
                     reader.skipValue();
                 }
@@ -107,56 +102,6 @@ public class ServerGetUser extends NotifyingThread {
 
     public void printURL(){
 
-        System.out.println(GET_USER + getUserId());
-    }
-
-    public void setUserId(int newUserId){
-
-        userId = newUserId;
-    }
-
-    public int getUserId(){
-
-        return userId;
-    }
-
-    public String getUsername(){
-
-        return username;
-    }
-
-    public String getFirstName(){
-
-        return firstName;
-    }
-
-    public String getLastName(){
-
-        return lastName;
-    }
-
-    public String getCreateDate(){
-
-        return createDate;
-    }
-
-    public String getLastEditDate(){
-
-        return lastEditDate;
-    }
-
-    public boolean getActive(){
-
-        return active;
-    }
-
-    public void printProperties(){
-
-        System.out.println("username: " + getUsername());
-        System.out.println("firstName: " + getFirstName());
-        System.out.println("lastName: " + getLastName());
-        System.out.println("createDate: " + getCreateDate());
-        System.out.println("lastEditDate: " + getLastEditDate());
-        System.out.println("active: " + getActive());
+        System.out.println(GET_USER + currentUser.getUserId());
     }
 }
