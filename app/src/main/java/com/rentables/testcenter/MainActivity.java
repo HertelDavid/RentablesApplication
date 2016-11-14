@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity implements ThreadListener{
     @Override
     public void notifyOfThreadCompletion(final NotifyingThread notifyingThread){
 
-        ThreadGetUser thread = (ThreadGetUser) notifyingThread;
         firstUser.printProperties();
     }
 
@@ -74,10 +73,13 @@ public class MainActivity extends AppCompatActivity implements ThreadListener{
 
     public void testServerConnection(){
 
-        /*firstUser = new User(32);
+        firstUser = new User(32);
         ThreadGetUser get = new ThreadGetUser(firstUser);
         get.addListener(this);
-        new Thread(get).start();*/
+
+        //Starting the thread.
+        new Thread(get).start();
+
     }
 
     public void userLogin(View view){
