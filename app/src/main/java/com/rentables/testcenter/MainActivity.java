@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
 import android.view.KeyEvent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.widget.EditText;
@@ -24,7 +25,8 @@ public class MainActivity extends AppCompatActivity implements ThreadListener{
         setContentView(R.layout.activity_main);
 
         //Setting up toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.rentables_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Rentables");
 

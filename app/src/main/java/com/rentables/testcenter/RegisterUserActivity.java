@@ -19,7 +19,7 @@ public class RegisterUserActivity extends AppCompatActivity {
         this.setContentView(R.layout.activity_register_user);
 
         //Setting up toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.rentables_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
 
         resetPasswordTypeface();
