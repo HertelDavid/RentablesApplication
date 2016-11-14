@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements ThreadListener{
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        
         //Setting up toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
 
