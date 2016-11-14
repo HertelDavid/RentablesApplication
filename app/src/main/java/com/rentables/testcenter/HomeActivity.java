@@ -21,6 +21,8 @@ public class HomeActivity extends AppCompatActivity {
 
         Toolbar toolbarMain = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbarMain);
+        getSupportActionBar().setTitle("Rentables");
+
 
 
         Toolbar toolbarNavigate = (Toolbar) findViewById(R.id.toolbar_navigate);
