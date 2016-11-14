@@ -24,4 +24,7 @@
     <string name="overflow_settings_string">Settings</string>
     <string name="overflow_account_string">Account</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
