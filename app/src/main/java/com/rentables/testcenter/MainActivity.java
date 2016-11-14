@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity implements ThreadListener{
     @Override
     public void notifyOfThreadCompletion(final NotifyingThread notifyingThread){
 
-
+        
     }
 
     public void testServerConnection(){
