@@ -39,11 +39,14 @@ public class ThreadGetUser extends NotifyingThread {
             //Setting the properties of this connection
             connect.setRequestMethod("GET");
             connect.setRequestProperty("Accept", "application/json");
+            connect.setRequestProperty("authorization", "Basic dGVzdDp0ZXN0");
 
             if(connect.getResponseCode() != 200){
 
                 throw new RuntimeException("HTTP response code: " + connect.getResponseCode());
             }
+
+            System.out.println(connect.getResponseCode());
 
             return new JsonReader(new InputStreamReader(connect.getInputStream(), "UTF-8"));
 
