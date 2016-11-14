@@ -26,9 +26,14 @@ public class MainActivity extends AppCompatActivity implements ThreadListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+<<<<<<< HEAD
         //Setting up toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
 
+=======
+        //Setting up the toolbar
+        Toolbar toolbar = (Toolbar) findViewById(R.id.rentables_toolbar);
+>>>>>>> b26c115bf7e48690b20142f4a2288e844906d809
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Rentables");
 
