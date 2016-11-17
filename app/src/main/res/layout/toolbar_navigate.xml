@@ -18,36 +18,40 @@
         android:orientation="horizontal"
         android:layout_gravity="center"
         android:gravity="center">
-            <Button
-                android:text="HOME"
+            <ImageButton
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:src="@drawable/ic_home_white_48dp"
                 android:layout_width="0dip"
                 android:layout_height="fill_parent"
                 android:layout_weight="20"
                 android:onClick="selectFrag"
                 android:id="@+id/button1"/>
-
             <Button
+                android:backgroundTint="@color/colorPrimaryDark"
                 android:text="BTN2"
                 android:layout_width="0dip"
                 android:layout_height="fill_parent"
                 android:layout_weight="20"
                 android:onClick="selectFrag"
                 android:id="@+id/button2"/>
-            <Button
-                android:text="BROWSE"
+            <ImageButton
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:src="@drawable/ic_search_white_48dp"
                 android:layout_width="0dip"
                 android:layout_height="fill_parent"
                 android:layout_weight="20"
                 android:onClick="selectFrag"
                 android:id="@+id/button3"/>
-            <Button
-                android:text="MY POSTS"
+            <ImageButton
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:src="@drawable/ic_list_white_48dp"
                 android:layout_width="0dip"
                 android:layout_height="fill_parent"
                 android:layout_weight="20"
                 android:onClick="selectFrag"
                 android:id="@+id/button4"/>
             <Button
+                android:backgroundTint="@color/colorPrimaryDark"
                 android:text="BTN5"
                 android:layout_width="0dip"
                 android:layout_height="fill_parent"
