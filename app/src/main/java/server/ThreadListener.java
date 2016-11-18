@@ -1,4 +1,6 @@
-package com.rentables.testcenter;
+package server;
+
+import server.NotifyingThread;
 
 public interface ThreadListener {
 
