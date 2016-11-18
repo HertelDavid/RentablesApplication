@@ -1,4 +1,4 @@
-package dataobjects;
+package dataobject;
 
 //This class servers as a data object for the user currently using the app.
 //There will only ever be one user at a time.

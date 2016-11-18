@@ -13,14 +13,21 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 
-public class RegisterUserActivity extends AppCompatActivity {
+import java.util.ArrayList;
+
+import dataobject.CreateUser;
+import server.NotifyingThread;
+import server.ServerConnection;
+import server.ThreadListener;
+
+public class RegisterUserActivity extends AppCompatActivity implements ThreadListener {
 
     private boolean passwordsMatch = false;
+    private CreateUser newUser = new CreateUser();
+    Thread connectionThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
-
-        System.out.println("Reached");
 
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.activity_register_user);
@@ -49,6 +56,52 @@ public class RegisterUserActivity extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public void notifyOfThreadCompletion(NotifyingThread notifyThread) {
+
+        //Thread completion!!
+
+        finalizeRegistration(notifyThread);
+
+        System.out.println("The connection has been made and the thread has finished.");
+    }
+
+    public void finalizeRegistration(NotifyingThread notifyThread){
+
+        //TODO This will most likely change some time in the future. As in the way the errors are handled
+        //If the user was able to register then create a dialog box prompting the user with
+        //"A confirmation email has been sent your way" then have a button to send the user
+        //back to the login screen. Also, respond to errors here.
+
+        final EditText username = (EditText) findViewById(R.id.register_username);
+        final EditText password = (EditText) findViewById(R.id.register_password);
+
+        ArrayList errors = notifyThread.getErrors();
+
+        if(errors != null){
+            if(notifyThread.getErrorAt(0).equals("could not execute statement")){
+
+                this.runOnUiThread(new Runnable(){
+                    @Override
+                    public void run(){username.setError("Email already in use!");}
+                });
+
+            }else if(notifyThread.getErrorAt(0).equals("{\"password\":\"Password must contain at least seven characters with one number and one letter.\"}")) {
+
+                this.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        password.setError("Must contain at least seven characters with one number and one letter");
+                    }
+                });
+            }
+        }else{
+
+            //This is where the dialog fragment will popup
+            System.out.println("Woohoo! User has been registered successfully!");
+        }
+    }
+
     public void registerUser(View view){
 
         /*
@@ -61,10 +114,33 @@ public class RegisterUserActivity extends AppCompatActivity {
             //Checking to see if forms have been filled out completely and
             //that the passwords match correctly.
             return;
+
         }else{
 
-            System.out.println("Hello");
+            initializeNewUser();
+
+            //Creating a ServerConnection with a CreateUser object. The ServerConnection object will
+            //decide what kind of connection to make based off the object passed to it.
+            ServerConnection<CreateUser> createUserConnection = new ServerConnection<>(newUser);
+            createUserConnection.addListener(this);
+
+            //Starting the thread which connects to the server
+            connectionThread = new Thread(createUserConnection);
+            connectionThread.start();
         }
+    }
+
+    public void initializeNewUser(){
+
+        EditText username = (EditText) findViewById(R.id.register_username);
+        EditText firstName = (EditText) findViewById(R.id.register_firstname);
+        EditText lastName = (EditText) findViewById(R.id.register_lastname);
+        EditText password = (EditText) findViewById(R.id.register_password);
+
+        newUser.setUsername(username.getText().toString());
+        newUser.setFirstName(firstName.getText().toString());
+        newUser.setLastName(lastName.getText().toString());
+        newUser.setPassword(password.getText().toString());
     }
 
     public void resetPasswordTypeface(){

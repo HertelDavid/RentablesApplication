@@ -14,11 +14,10 @@ import android.view.View;
 import android.view.View.OnKeyListener;
 import android.widget.EditText;
 
-import dataobjects.User;
+import server.NotifyingThread;
+import server.ThreadListener;
 
-public class MainActivity extends AppCompatActivity implements ThreadListener{
-
-    User firstUser;
+public class MainActivity extends AppCompatActivity implements ThreadListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements ThreadListener{
     @Override
     public void notifyOfThreadCompletion(final NotifyingThread notifyingThread){
 
-        firstUser.printProperties();
+        System.out.println("Thread finished");
     }
 
     @Override
@@ -72,12 +71,19 @@ public class MainActivity extends AppCompatActivity implements ThreadListener{
 
     public void testServerConnection(){
 
-        firstUser = new User(32);
-        ThreadGetUser get = new ThreadGetUser(firstUser);
-        get.addListener(this);
+        /*System.out.println("Reached testServerConnection!");
+        CreateUser theNewUser = new CreateUser();
+        theNewUser.setUsername("herteldavid3@gmail.com");
+        theNewUser.setFirstName("David");
+        theNewUser.setLastName("Hertel");
+        theNewUser.setPassword("test123");
+
+        ServerConnection<CreateUser> connection = new ServerConnection<>(theNewUser);
+
+        connection.addListener(this);
 
         //Starting the thread.
-        new Thread(get).start();
+        new Thread(connection).start();*/
 
     }
 
