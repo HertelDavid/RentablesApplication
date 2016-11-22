@@ -10,7 +10,7 @@
     <string name="no_account">Don\'t have an account?</string>
     <string name="sign_up"><u>SIGN UP</u></string>
 
-    <!-- Strings for activity_forgot_pass-->
+    <!-- Strings for dialog_fragment_forgot_pass-->
     <string name="enter_username">Please enter your username</string>
 
     <!-- Strings for activity_register_user -->
@@ -20,6 +20,8 @@
     <string name="register_password">Password</string>
     <string name="register_password_confirm">Confirm Password</string>
     <string name="register_button">REGISTER</string>
+    <string name="registration_successful">Registration was Successful!</string>
+    <string name="registration_continue">CONTINUE</string>
 
     <!-- Strings for the overflow menu -->
     <string name="overflow_settings_string">Settings</string>

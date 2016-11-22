@@ -14,10 +14,19 @@ import android.view.View;
 import android.view.View.OnKeyListener;
 import android.widget.EditText;
 
+import com.google.gson.Gson;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import dataobject.LoginUser;
 import server.NotifyingThread;
+import server.ServerConnection;
 import server.ThreadListener;
 
 public class MainActivity extends AppCompatActivity implements ThreadListener {
+
+    Thread loginThread = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +46,6 @@ public class MainActivity extends AppCompatActivity implements ThreadListener {
         //Resetting weird password typeface
         resetPasswordTypeface();
 
-        testServerConnection();
     }
 
     @Override
@@ -51,24 +59,40 @@ public class MainActivity extends AppCompatActivity implements ThreadListener {
     @Override
     public void notifyOfThreadCompletion(final NotifyingThread notifyingThread){
 
-    }
+        if(loginThread != null) {
+            ArrayList<String> errors = notifyingThread.getErrors();
+            final EditText username = (EditText) findViewById(R.id.username_edit_text);
 
-    public void testServerConnection(){
+            if (errors != null) {
 
-        /*System.out.println("Reached testServerConnection!");
-        CreateUser theNewUser = new CreateUser();
-        theNewUser.setUsername("herteldavid3@gmail.com");
-        theNewUser.setFirstName("David");
-        theNewUser.setLastName("Hertel");
-        theNewUser.setPassword("test123");
+                if (errors.get(0).contains("Bad credentials")) {
 
-        ServerConnection<CreateUser> connection = new ServerConnection<>(theNewUser);
+                    this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            username.setError("Bad Credentials!");
+                        }
+                    });
 
-        connection.addListener(this);
+                } else if (errors.get(0).contains("User is disabled")) {
 
-        //Starting the thread.
-        new Thread(connection).start();*/
+                    this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            username.setError("Authentication required!");
+                        }
+                    });
+                }
 
+            } else if (errors == null) {
+
+                Intent loginIntent = new Intent();
+                loginIntent.setClass(this, HomeActivity.class);
+                startActivity(loginIntent);
+            }
+        }
+
+        loginThread = null;
     }
 
     public void userLogin(View view){
@@ -91,9 +115,15 @@ public class MainActivity extends AppCompatActivity implements ThreadListener {
 
         if(complete){
 
-            Intent loginIntent = new Intent();
-            loginIntent.setClass(this, HomeActivity.class);
-            startActivity(loginIntent);
+            LoginUser user = new LoginUser();
+            user.setUsername(userName.getText().toString().trim());
+            user.setPassword(password.getText().toString().trim());
+
+            ServerConnection<LoginUser> connection = new ServerConnection<>(user);
+            connection.addListener(this);
+
+            loginThread = new Thread(connection);
+            loginThread.start();
         }
     }
 

@@ -2,6 +2,7 @@ package com.rentables.testcenter;
 
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -14,6 +15,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import dataobject.CreateUser;
 import server.NotifyingThread;
@@ -68,7 +70,7 @@ public class RegisterUserActivity extends AppCompatActivity implements ThreadLis
 
     public void finalizeRegistration(NotifyingThread notifyThread){
 
-        //TODO This will most likely change some time in the future. As in the way the errors are handled
+        //TODO This will most likely change some time in the future. The way the errors are handled
         //If the user was able to register then create a dialog box prompting the user with
         //"A confirmation email has been sent your way" then have a button to send the user
         //back to the login screen. Also, respond to errors here.
@@ -94,10 +96,26 @@ public class RegisterUserActivity extends AppCompatActivity implements ThreadLis
                         password.setError("Must contain at least seven characters with one number and one letter");
                     }
                 });
-            }
-        }else{
+            }else if(notifyThread.getErrorAt(0).equals("{\"username\":\"User name must be a valid email address.\"}")){
 
-            //This is where the dialog fragment will popup
+                this.runOnUiThread(new Runnable(){
+                    @Override
+                    public void run(){
+                        username.setError("Not a valid email!");
+                    }
+                });
+            }else{
+
+                Iterator<String> iterator = errors.iterator();
+
+                while(iterator.hasNext()){
+
+                    System.out.println(iterator.next());
+                }
+            }
+        }else if(errors == null){
+
+            showRegistrationDialog();
             System.out.println("Woohoo! User has been registered successfully!");
         }
     }
@@ -130,6 +148,18 @@ public class RegisterUserActivity extends AppCompatActivity implements ThreadLis
         }
     }
 
+    public void showRegistrationDialog(){
+
+        FragmentManager manager = getSupportFragmentManager();
+        RegistrationSuccessDialog successDialog = new RegistrationSuccessDialog();
+        successDialog.show(manager, "registration_successful_dialog");
+    }
+
+    public void onContinue(View view){
+
+        this.finish();
+    }
+
     public void initializeNewUser(){
 
         EditText username = (EditText) findViewById(R.id.register_username);
@@ -141,18 +171,6 @@ public class RegisterUserActivity extends AppCompatActivity implements ThreadLis
         newUser.setFirstName(firstName.getText().toString());
         newUser.setLastName(lastName.getText().toString());
         newUser.setPassword(password.getText().toString());
-    }
-
-    public void resetPasswordTypeface(){
-
-        EditText password = (EditText) findViewById(R.id.register_password);
-        EditText confirmPassword = (EditText) findViewById(R.id.register_password_confirm);
-
-        password.setTypeface(Typeface.DEFAULT);
-        confirmPassword.setTypeface(Typeface.DEFAULT);
-
-        password.setTransformationMethod(new PasswordTransformationMethod());
-        confirmPassword.setTransformationMethod((new PasswordTransformationMethod()));
     }
 
     public void setFocusOfEditText(int viewId){
@@ -284,5 +302,17 @@ public class RegisterUserActivity extends AppCompatActivity implements ThreadLis
         }
 
         return formCompleted;
+    }
+
+    public void resetPasswordTypeface(){
+
+        EditText password = (EditText) findViewById(R.id.register_password);
+        EditText confirmPassword = (EditText) findViewById(R.id.register_password_confirm);
+
+        password.setTypeface(Typeface.DEFAULT);
+        confirmPassword.setTypeface(Typeface.DEFAULT);
+
+        password.setTransformationMethod(new PasswordTransformationMethod());
+        confirmPassword.setTransformationMethod((new PasswordTransformationMethod()));
     }
 }
