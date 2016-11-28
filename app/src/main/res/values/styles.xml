@@ -16,6 +16,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColorPrimary">@color/white</item>
         <item name="android:textColorSecondary">@color/white</item>
+        <item name="android:colorButtonNormal">@color/colorPrimary</item>
     </style>
 
     <!--style for dialog fragments with titles -->

@@ -20,6 +20,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         Toolbar toolbarMain = (Toolbar) findViewById(R.id.toolbar_main);
+        toolbarMain.inflateMenu(R.menu.overflow_menu);
         setSupportActionBar(toolbarMain);
         getSupportActionBar().setTitle("Rentables");
 
@@ -29,14 +30,6 @@ public class HomeActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbarNavigate);
 
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu){
-
-        getMenuInflater().inflate(R.menu.overflow_menu, menu);
-
-        return true;
     }
 
     @Override

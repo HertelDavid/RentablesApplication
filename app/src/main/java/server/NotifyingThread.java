@@ -13,7 +13,7 @@ public abstract class NotifyingThread implements Runnable {
 
     private final Set<ThreadListener> listeners = new CopyOnWriteArraySet<>();
     private ArrayList errors = new ArrayList();
-    private ArrayList results = new ArrayList();
+    private ArrayList notifications = new ArrayList();
 
     public void addListener(ThreadListener listenerToAdd){
         listeners.add(listenerToAdd);
@@ -38,7 +38,7 @@ public abstract class NotifyingThread implements Runnable {
 
     public Object getNotificationAt(int index){
 
-        return results.get(index);
+        return notifications.get(index);
     }
 
     public ArrayList getErrors(){
@@ -79,7 +79,7 @@ public abstract class NotifyingThread implements Runnable {
 
     protected void addNotification(Object object){
 
-        results.add(object);
+        notifications.add(object);
     }
 
     @Override

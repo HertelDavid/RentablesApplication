@@ -9,15 +9,11 @@ import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
 import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.widget.EditText;
 
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
-import java.util.Iterator;
 
 import dataobject.LoginUser;
 import server.NotifyingThread;
@@ -62,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements ThreadListener {
         if(loginThread != null) {
             ArrayList<String> errors = notifyingThread.getErrors();
             final EditText username = (EditText) findViewById(R.id.username_edit_text);
+            final EditText password = (EditText) findViewById(R.id.password_edit_text);
 
             if (errors != null) {
 
@@ -70,7 +67,8 @@ public class MainActivity extends AppCompatActivity implements ThreadListener {
                     this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            username.setError("Bad Credentials!");
+
+                            password.setError("Username or password is incorrect!");
                         }
                     });
 
@@ -79,6 +77,8 @@ public class MainActivity extends AppCompatActivity implements ThreadListener {
                     this.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+
+                            //TODO Probably display a dialog fragment to inform the user of authorizing their account.
                             username.setError("Authentication required!");
                         }
                     });
