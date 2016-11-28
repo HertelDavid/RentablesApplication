@@ -9,14 +9,20 @@ import android.os.Bundle;
 import android.text.method.PasswordTransformationMethod;
 import android.view.KeyEvent;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnKeyListener;
 import android.widget.EditText;
 
-public class MainActivity extends AppCompatActivity implements ThreadListener{
+import java.util.ArrayList;
 
-    ServerGetUser get;
+import dataobject.LoginUser;
+import server.NotifyingThread;
+import server.ServerConnection;
+import server.ThreadListener;
+
+public class MainActivity extends AppCompatActivity implements ThreadListener {
+
+    Thread loginThread = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements ThreadListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Setting up toolbar
+         //Setting up toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
 
         setSupportActionBar(toolbar);
@@ -36,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements ThreadListener{
         //Resetting weird password typeface
         resetPasswordTypeface();
 
-        testServerConnection();
     }
 
     @Override
@@ -50,22 +55,44 @@ public class MainActivity extends AppCompatActivity implements ThreadListener{
     @Override
     public void notifyOfThreadCompletion(final NotifyingThread notifyingThread){
 
-        ServerGetUser thread = (ServerGetUser) notifyingThread;
-        thread.printProperties();
-    }
+        if(loginThread != null) {
+            ArrayList<String> errors = notifyingThread.getErrors();
+            final EditText username = (EditText) findViewById(R.id.username_edit_text);
+            final EditText password = (EditText) findViewById(R.id.password_edit_text);
 
-    public void testServerConnection(){
+            if (errors != null) {
 
-        //get = new ServerGetUser(1);
-        //get1 = new ServerGetUser(1);
-        //get2 = new ServerGetUser(22);
-        //get.addListener(this);
-        //get1.addListener(this);
-        //get2.addListener(this);
-        //new Thread(get).start();
-        //new Thread(get1).start();
-        //new Thread(get2).start();
+                if (errors.get(0).contains("Bad credentials")) {
 
+                    this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            password.setError("Username or password is incorrect!");
+                        }
+                    });
+
+                } else if (errors.get(0).contains("User is disabled")) {
+
+                    this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            //TODO Probably display a dialog fragment to inform the user of authorizing their account.
+                            username.setError("Authentication required!");
+                        }
+                    });
+                }
+
+            } else if (errors == null) {
+
+                Intent loginIntent = new Intent();
+                loginIntent.setClass(this, HomeActivity.class);
+                startActivity(loginIntent);
+            }
+        }
+
+        loginThread = null;
     }
 
     public void userLogin(View view){
@@ -88,9 +115,15 @@ public class MainActivity extends AppCompatActivity implements ThreadListener{
 
         if(complete){
 
-            Intent loginIntent = new Intent();
-            loginIntent.setClass(this, HomeActivity.class);
-            startActivity(loginIntent);
+            LoginUser user = new LoginUser();
+            user.setUsername(userName.getText().toString().trim());
+            user.setPassword(password.getText().toString().trim());
+
+            ServerConnection<LoginUser> connection = new ServerConnection<>(user);
+            connection.addListener(this);
+
+            loginThread = new Thread(connection);
+            loginThread.start();
         }
     }
 
